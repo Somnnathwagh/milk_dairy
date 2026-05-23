@@ -42,31 +42,19 @@
 			<div class="page-content">
 				<!--breadcrumb-->
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-					<div class="breadcrumb-title pe-3">Show Customer</div>
+					<div class="breadcrumb-title pe-3">Show Milk Entry</div>
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Show Customer</li>
+								<li class="breadcrumb-item active" aria-current="page">Show Milk Entry</li>
 							</ol>
 						</nav>
 					</div>
-					<div class="ms-auto">
-						<div class="btn-group">
-							<button type="button" class="btn btn-primary">Settings</button>
-							<button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
-							</button>
-							<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
-								<a class="dropdown-item" href="javascript:;">Another action</a>
-								<a class="dropdown-item" href="javascript:;">Something else here</a>
-								<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
-							</div>
-						</div>
-					</div>
 				</div>
 				<!--end breadcrumb-->
-				<h6 class="mb-0 text-uppercase">Show Customer</h6>
+				<h6 class="mb-0 text-uppercase">Show Milk Entry</h6>
 				<hr/>
 				<div class="card">
 					<div class="card-body">
@@ -75,20 +63,20 @@
 								<thead>
 									<tr>
 										<th>SR.No.</th>
-										<th>Customer Account No</th>
+										<th>Account Number</th>
 										<th>Customer Name</th>
 										<th>Milk Type</th>
-										<th>Address</th>
-										<th>Mobile Number</th>
+										<th>Milk Quentity</th>
+										<th>Milk Rate</th>
+										<th>Milk </th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php
 										include("include/config.php");
-										$query = "SELECT * FROM customer_master ORDER BY id DESC";
+										$query = "SELECT * FROM milk_entry ORDER BY id DESC";
 										$result = mysqli_query($conn, $query);
 										$sr = 1;
-
 										while($row = mysqli_fetch_assoc($result))
 										{
 										?>
@@ -96,20 +84,10 @@
 											<td><?php echo $sr++; ?></td>
 											<td><?php echo $row['cust_ac_no']; ?></td>
 											<td><?php echo $row['cust_name']; ?></td>
-											<td>
-												<?php
-													if($row['milk_type'] == 1)
-													{
-														echo "Cow";
-													}
-													else
-													{
-														echo "Buffalo";
-													}
-												?>
-											</td>
-											<td><?php echo $row['address']; ?></td>
-											<td><?php echo $row['mobile_no']; ?></td>
+											<td><?php echo $row['milk_type']; ?></td>
+											<td><?php echo $row['milk_quantity']; ?></td>
+											<td><?php echo $row['milk_rate']; ?></td>
+											<td><?php echo $row['total_amount']; ?></td>
 										</tr>
 									<?php
 									}

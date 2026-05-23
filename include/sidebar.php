@@ -39,9 +39,22 @@
 						<div class="menu-title">Bank Details</div>
 					</a>
 					<ul>        
-						<li> <a href="component-buttons.php"><i class="bx bx-right-arrow-alt"></i>Add Bank Details</a>
+						<li> <a href="add_bank_details.php"><i class="bx bx-right-arrow-alt"></i>Add Bank Details</a>
 						</li>
-						<li> <a href="component-cards.php"><i class="bx bx-right-arrow-alt"></i>Show Bank Details</a>
+						<li> <a href="show_bank_details.php"><i class="bx bx-right-arrow-alt"></i>Show Bank Details</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+						</div>
+						<div class="menu-title">Rate Card</div>
+					</a>
+					<ul>        
+						<li> <a href="add_milk_rate.php"><i class="bx bx-right-arrow-alt"></i>Add Milk Rate</a>
+						</li>
+						<li> <a href="show_milk_rate.php"><i class="bx bx-right-arrow-alt"></i>Show Milk Rate</a>
 						</li>
 					</ul>
 				</li>
@@ -52,9 +65,24 @@
 						<div class="menu-title">Milk Entry</div>
 					</a>
 					<ul>        
-						<li> <a href="component-buttons.php"><i class="bx bx-right-arrow-alt"></i>Add Milk Entry</a>
+						<li> <a href="add_milk_entry.php"><i class="bx bx-right-arrow-alt"></i>Add Milk Entry</a>
 						</li>
-						<li> <a href="component-cards.php"><i class="bx bx-right-arrow-alt"></i>Show Milk Entry</a>
+						<li> <a href="show_milk_entry.php"><i class="bx bx-right-arrow-alt"></i>Show Milk Entry</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+						</div>
+						<div class="menu-title">Food Entry</div>
+					</a>
+					<ul>        
+						<li> <a href="add_food_price.php"><i class="bx bx-right-arrow-alt"></i>Add Food Price</a>
+						</li>
+						<li> <a href="add_food_entry.php"><i class="bx bx-right-arrow-alt"></i>Add Food Entry</a>
+						</li>
+						<li> <a href="show_food_entry.php"><i class="bx bx-right-arrow-alt"></i>Food Milk Entry</a>
 						</li>
 					</ul>
 				</li>

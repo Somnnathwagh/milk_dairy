@@ -267,12 +267,12 @@
 			showConfirmButton: false
 		});
 	}
-	}
+}
 		});
 
 	});
 
-	});
+});
 
 </script>
 
