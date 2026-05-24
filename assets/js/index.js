@@ -19,7 +19,7 @@ $(function() {
         data: {
           labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
           datasets: [{
-            label: 'Laptops',
+            label: 'Cow Milk',
             data: [65, 59, 80, 81, 65, 59, 80, 60, 59],
             borderColor: '#008cff',
             backgroundColor:  '#008cff',
@@ -28,7 +28,7 @@ $(function() {
             fill: false,
             borderWidth: 0
           }, {
-            label: 'Mobiles',
+            label: 'Buffelo Milk',
             data: [50, 48, 55, 45, 37, 58, 64, 50, 54],
             borderColor: '#ffc107',
             backgroundColor: '#ffc107',

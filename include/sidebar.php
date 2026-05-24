@@ -93,7 +93,7 @@
 						<div class="menu-title">Payment</div>
 					</a>
 					<ul>        
-						<li> <a href="add_advance.php"><i class="bx bx-right-arrow-alt"></i>Add Advance</a>
+						<li> <a href="add_advance_payment.php"><i class="bx bx-right-arrow-alt"></i>Add Advance</a>
 						</li>
 						<li> <a href="show_advance.php"><i class="bx bx-right-arrow-alt"></i>Add Show Advance List</a>
 						</li>
