@@ -95,24 +95,9 @@
 					<ul>        
 						<li> <a href="add_advance_payment.php"><i class="bx bx-right-arrow-alt"></i>Add Advance</a>
 						</li>
-						<li> <a href="show_advance.php"><i class="bx bx-right-arrow-alt"></i>Add Show Advance List</a>
+						<li> <a href="show_all_payment_list.php"><i class="bx bx-right-arrow-alt"></i>Show All Payment List</a>
 						</li>
-						<li> <a href="add_payment.php"><i class="bx bx-right-arrow-alt"></i>payment</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class="bx bx-repeat"></i>
-						</div>
-						<div class="menu-title">Content</div>
-					</a>
-					<ul>
-						<li> <a href="content-grid-system.php"><i class="bx bx-right-arrow-alt"></i>Grid System</a>
-						</li>
-						<li> <a href="content-typography.php"><i class="bx bx-right-arrow-alt"></i>Typography</a>
-						</li>
-						<li> <a href="content-text-utilities.php"><i class="bx bx-right-arrow-alt"></i>Text Utilities</a>
+						<li> <a href="make_payment.php"><i class="bx bx-right-arrow-alt"></i>Make Payment</a>
 						</li>
 					</ul>
 				</li>
@@ -135,13 +120,6 @@
 						<li> <a href="error-blank-page.php" target="_blank"><i class="bx bx-right-arrow-alt"></i>Blank Page</a>
 						</li>
 					</ul>
-				</li>
-				<li>
-					<a href="charts-chartjs.php">
-						<div class="parent-icon"><i class="bx bx-user-circle"></i>
-						</div>
-						<div class="menu-title">Charts</div>
-					</a>
 				</li>
 				<li>
 					<a href="table-datatable.php">

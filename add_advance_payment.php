@@ -130,7 +130,7 @@
 
 
 				<!-- Total Amount -->
-				<div class="col-md-4 mb-3">
+				<!-- <div class="col-md-4 mb-3">
 
 					<label class="form-label">
 						Total Amount
@@ -142,7 +142,7 @@
 					class="form-control"
 					readonly>
 
-				</div>
+				</div> -->
 
 			</div>
 
@@ -187,7 +187,6 @@
 
 						<th>Advance Payment</th>
 
-						<th>Total Amount</th>
 
 						<th>Date</th>
 
@@ -221,7 +220,7 @@
 
 						<td><?php echo $row['payment']; ?></td>
 
-						<td><?php echo $row['total_amount']; ?></td>
+						<!-- <td><?php echo $row['total_amount']; ?></td> -->
 
 						<td><?php echo $row['created_at']; ?></td>
 
@@ -396,7 +395,7 @@ $(document).ready(function(){
 
 					var payment     = $("#payment").val();
 
-					var total_amount = $("#total_amount").val();
+					// var total_amount = $("#total_amount").val();
 
 
 
@@ -426,7 +425,7 @@ $(document).ready(function(){
 
 						payment,
 
-						total_amount,
+						//total_amount,
 
 						'Just Now'
 

@@ -42,19 +42,19 @@
 			<div class="page-content">
 				<!--breadcrumb-->
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-					<div class="breadcrumb-title pe-3">Show Customer</div>
+					<div class="breadcrumb-title pe-3">Show All Payment List</div>
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Show Customer</li>
+								<li class="breadcrumb-item active" aria-current="page">Show All Payment List</li>
 							</ol>
 						</nav>
 					</div>
 				</div>
 				<!--end breadcrumb-->
-				<h6 class="mb-0 text-uppercase">Show Customer</h6>
+				<h6 class="mb-0 text-uppercase">Show All Payment List</h6>
 				<hr/>
 				<div class="card">
 					<div class="card-body">
@@ -66,14 +66,24 @@
 										<th>Customer Account No</th>
 										<th>Customer Name</th>
 										<th>Milk Type</th>
-										<th>Address</th>
-										<th>Mobile Number</th>
+										<th>Total Amount</th>
+										<th>View Details</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php
 										include("include/config.php");
-										$query = "SELECT * FROM customer_master ORDER BY id DESC";
+										// $query = "SELECT * FROM advance_payment ORDER BY id DESC";
+
+										$query = "SELECT 
+            cust_ac_no,
+            cust_name,
+            milk_type,
+            SUM(payment) AS total_payment
+          FROM advance_payment
+          GROUP BY cust_ac_no
+          ORDER BY total_payment DESC";
+
 										$result = mysqli_query($conn, $query);
 										$sr = 1;
 
@@ -96,8 +106,8 @@
 													}
 												?>
 											</td>
-											<td><?php echo $row['address']; ?></td>
-											<td><?php echo $row['mobile_no']; ?></td>
+											<td><?php echo number_format($row['total_payment'], 2); ?></td>
+											<td>aaaa</td>
 										</tr>
 									<?php
 									}
