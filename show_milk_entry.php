@@ -68,8 +68,9 @@
 										<th>Milk Type</th>
 										<th>Milk Quentity</th>
 										<th>Milk Rate</th>
-										<th>Milk </th>
-									</tr>
+<th>Total Amount</th>
+<th>Invoice</th>									
+</tr>
 								</thead>
 								<tbody>
 									<?php
@@ -81,14 +82,34 @@
 										{
 										?>
 										<tr>
-											<td><?php echo $sr++; ?></td>
-											<td><?php echo $row['cust_ac_no']; ?></td>
-											<td><?php echo $row['cust_name']; ?></td>
-											<td><?php echo $row['milk_type']; ?></td>
-											<td><?php echo $row['milk_quantity']; ?></td>
-											<td><?php echo $row['milk_rate']; ?></td>
-											<td><?php echo $row['total_amount']; ?></td>
-										</tr>
+
+	<td><?php echo $sr++; ?></td>
+
+	<td><?php echo $row['cust_ac_no']; ?></td>
+
+	<td><?php echo $row['cust_name']; ?></td>
+
+	<td><?php echo $row['milk_type']; ?></td>
+
+	<td><?php echo $row['milk_quantity']; ?></td>
+
+	<td><?php echo $row['milk_rate']; ?></td>
+
+	<td><?php echo $row['total_amount']; ?></td>
+
+	<td>
+
+		<a href="milk_invoice.php?id=<?php echo $row['id']; ?>"
+
+		class="btn btn-primary btn-sm">
+
+			Invoice
+
+		</a>
+
+	</td>
+
+</tr>
 									<?php
 									}
 									?>

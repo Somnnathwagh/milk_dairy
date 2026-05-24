@@ -88,6 +88,21 @@
 				</li>
 				<li>
 					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+						</div>
+						<div class="menu-title">Payment</div>
+					</a>
+					<ul>        
+						<li> <a href="add_advance.php"><i class="bx bx-right-arrow-alt"></i>Add Advance</a>
+						</li>
+						<li> <a href="show_advance.php"><i class="bx bx-right-arrow-alt"></i>Add Show Advance List</a>
+						</li>
+						<li> <a href="add_payment.php"><i class="bx bx-right-arrow-alt"></i>payment</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-repeat"></i>
 						</div>
 						<div class="menu-title">Content</div>

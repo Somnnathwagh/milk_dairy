@@ -53,52 +53,22 @@
 							</ol>
 						</nav>
 					</div>
-					<div class="ms-auto">
-						<div class="btn-group">
-							<button type="button" class="btn btn-primary">Settings</button>
-							<button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
-							</button>
-							<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
-								<a class="dropdown-item" href="javascript:;">Another action</a>
-								<a class="dropdown-item" href="javascript:;">Something else here</a>
-								<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
-							</div>
-						</div>
-					</div>
 				</div>
 
 				<!-- Form Start -->
 <div class="card mb-4">
 	<div class="card-body">
-		<h6 class="mb-3 text-uppercase">Customer Form</h6>
+		<h6 class="mb-3 text-uppercase">Add Food Price</h6>
 
 <form id="customerForm" method="post">			
 	<div class="row">
 				<div class="col-md-4 mb-3">
-					<label class="form-label">Customer Account Number</label>
-					<input type="text" name="cust_ac_no" id="cust_ac_no" class="form-control" placeholder="Enter Customer Account Number" required>
+					<label class="form-label">Food Name</label>
+					<input type="text" name="food_name" id="food_name" class="form-control" placeholder="Enter Food Name" required>
 				</div>
 				<div class="col-md-4 mb-3">
-					<label class="form-label">Customer Name</label>
-					<input type="text" name="cust_name" id="cust_name" class="form-control" placeholder="Enter Customer Name" required>
-				</div>
-				<div class="col-md-4 mb-3">
-					<label class="form-label">Milk Type</label>
-					<select name="milk_type" id="milk_type" class="form-select" required>
-						<option value="">Select Milk Type</option>
-						<option value="1">Cow</option>
-						<option value="2">Buffalo</option>
-					</select>
-				</div>
-
-				<div class="col-md-4 mb-3">
-					<label class="form-label">Address</label>
-					<input type="text" name="address" id="address" class="form-control" placeholder="Enter Address" required>
-				</div>
-
-				<div class="col-md-4 mb-3">
-					<label class="form-label">Customer Mobile Number</label>
-					<input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Enter Customer Mobile Number" required>
+					<label class="form-label">Food Price</label>
+					<input type="text" name="food_price" id="food_price" class="form-control" placeholder="Enter Food Price" required>
 				</div>
 			</div>
 			<div class="row">
@@ -115,7 +85,7 @@
 
 
 				<!--end breadcrumb-->
-				<h6 class="mb-0 text-uppercase">Show Customer</h6>
+				<h6 class="mb-0 text-uppercase">Show Availabe Food</h6>
 				<hr/>
 				<div class="card">
 					<div class="card-body">
@@ -124,17 +94,14 @@
 								<thead>
 									<tr>
 										<th>SR.No.</th>
-										<th>Customer Account No</th>
-										<th>Customer Name</th>
-										<th>Milk Type</th>
-										<th>Address</th>
-										<th>Mobile Number</th>
+										<th>Food Name</th>
+										<th>Price</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php
 										include("include/config.php");
-										$query = "SELECT * FROM customer_master ORDER BY id DESC";
+										$query = "SELECT * FROM food_master ORDER BY id DESC";
 										$result = mysqli_query($conn, $query);
 
 										$sr = 1;
@@ -145,22 +112,8 @@
 										?>
 										<tr>
 											<td><?php echo $sr++; ?></td>
-											<td><?php echo $row['cust_ac_no']; ?></td>
-											<td><?php echo $row['cust_name']; ?></td>
-											<td>
-												<?php
-													if($row['milk_type'] == 1)
-													{
-														echo "Cow";
-													}
-													else
-													{
-														echo "Buffalo";
-													}
-												?>
-											</td>
-											<td><?php echo $row['address']; ?></td>
-											<td><?php echo $row['mobile_no']; ?></td>
+											<td><?php echo $row['food_name']; ?></td>
+											<td><?php echo $row['food_price']; ?></td>
 										</tr>
 									<?php
 									}
@@ -195,84 +148,95 @@
 	
 
 	<script>
-		$(document).ready(function() {
-			$('#example').DataTable();
-		  } );
-	</script>
 
+$(document).ready(function () {
 
-<script>
+	// DataTable Initialize
+	var table = $('#example').DataTable();
 
-	$(document).ready(function () {
-
-	$('#example').DataTable();
-
-	$("#customerForm").on("submit", function(e){
-
+	// Form Submit
+	$("#customerForm").on("submit", function(e)
+	{
 		e.preventDefault();
+
 		$.ajax({
-			url : "include/insert_customer.php",
+
+			url : "include/insert_food_price.php",
+
 			type : "POST",
+
 			data : $(this).serialize(),
 
-	success:function(response)
-	{
-	if(response == 1)
-	{
-		Swal.fire({
-			icon: 'success',
-			title: 'Success',
-			text: 'Customer Inserted Successfully',
-			timer: 2000,
-			showConfirmButton: false
-		});
+			success:function(response)
+			{
 
-		var cust_ac_no = $("#cust_ac_no").val();
-		var cust_name  = $("#cust_name").val();
-		var milk_type  = $("#milk_type option:selected").text();
-		var address    = $("#address").val();
-		var mobile_no  = $("#mobile_no").val();
+				if(response == 1)
+				{
 
-		var newRow = `
-			<tr>
-				<td>${cust_ac_no}</td>
-				<td>${cust_name}</td>
-				<td>${milk_type}</td>
-				<td>${address}</td>
-				<td>${mobile_no}</td>
-			</tr>
-		`;
+					// Form Values
+					var food_name  = $("#food_name").val();
 
-		$('#example').DataTable().row.add($(newRow)).draw(false);
+					var food_price = $("#food_price").val();
 
-		$("#customerForm")[0].reset();
-	}
-	else if(response == 2)
-	{
-		Swal.fire({
-			icon: 'warning',
-			title: 'Duplicate Entry',
-			text: 'Customer Account Number Already Exists',
-			timer: 2000,
-			showConfirmButton: false
-		});
-	}
-	else
-	{
-		Swal.fire({
-			icon: 'error',
-			title: 'Error',
-			text: 'Data Not Inserted',
-			timer: 2000,
-			showConfirmButton: false
-		});
-	}
-	}
+					// Row Count
+					var rowCount = table.rows().count() + 1;
+
+					// Add Row Instantly Without Refresh
+					table.row.add([
+
+						rowCount,
+
+						food_name,
+
+						food_price
+
+					]).draw(false);
+
+					// Sweet Alert
+					Swal.fire({
+
+						icon: 'success',
+
+						title: 'Success',
+
+						text: 'Food Price Inserted Successfully',
+
+						timer: 2000,
+
+						showConfirmButton: false
+
+					});
+
+					// Reset Form
+					$("#customerForm")[0].reset();
+
+				}
+				else
+				{
+
+					Swal.fire({
+
+						icon: 'error',
+
+						title: 'Error',
+
+						text: 'Data Not Inserted',
+
+						timer: 2000,
+
+						showConfirmButton: false
+
+					});
+
+				}
+
+			}
+
 		});
 
 	});
 
-	});
+});
 
 </script>
 
