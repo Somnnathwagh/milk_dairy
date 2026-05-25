@@ -1,19 +1,47 @@
 <?php
 
+//include("include/config.php");
+
+// $cust_ac_no = $_GET['cust_ac_no'];
+
+// $start_date = $_GET['start_date'];
+
+// $end_date = $_GET['end_date'];
+
+
+
 include("include/config.php");
 
-$cust_ac_no = $_GET['cust_ac_no'];
+$invoice_id = $_GET['invoice_id'];
 
-$start_date = $_GET['start_date'];
 
-$end_date = $_GET['end_date'];
+/* Payment Details */
+
+$payment_query = "
+
+SELECT * FROM payment_status
+
+WHERE invoice_id = '$invoice_id'
+
+";
+
+$payment_result = mysqli_query($conn, $payment_query);
+
+$payment = mysqli_fetch_assoc($payment_result);
+
+$cust_ac_no = $payment['cust_ac_no'];
+
+$start_date = $payment['start_date'];
+
+$end_date = $payment['end_date'];
+
 
 /* Customer Details */
-
 $customer_query = "
 
 SELECT 
 	milk_entry.cust_name,
+	milk_entry.milk_type,
 	customer_master.mobile_no,
 	customer_master.address,
 	customer_master.cust_ac_no
@@ -73,7 +101,55 @@ $total_result = mysqli_query($conn, $total_query);
 
 $total = mysqli_fetch_assoc($total_result);
 
+
+/* Food Details */
+
+$food_query = "
+
+SELECT 
+	food_name,
+	food_price,
+	food_unit,
+	total_amount
+
+FROM food_entry_master
+
+WHERE cust_ac_no = '$cust_ac_no'
+
+";
+
+$food_result = mysqli_query($conn, $food_query);
+
+
+
+/* Advance Payment Total */
+
+$advance_query = "
+
+SELECT
+SUM(payment) AS total_advance
+
+FROM advance_payment
+
+WHERE cust_ac_no = '$cust_ac_no'
+
+";
+
+$advance_result = mysqli_query($conn, $advance_query);
+
+$advance = mysqli_fetch_assoc($advance_result);
+
+/* Null असल्यास 0 */
+
+$total_advance = $advance['total_advance'];
+
+if($total_advance == '')
+{
+	$total_advance = 0;
+}
+
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -239,7 +315,6 @@ body{
 <body>
 
 <div class="print-btn">
-
 	<button onclick="window.print()">
 		Print Invoice
 	</button>
@@ -256,11 +331,11 @@ body{
 
 		<div class="company-details">
 
-			<h2>Dairy Milk</h2>
+			<h2>Rajhans Dairy Baramati</h2>
 
-			<p>Rajiv Nagar, Mata Mandir Road</p>
+			<p>Opp of Bharat Petrol Pump.</p>
 
-			<p>Nagpur, Maharashtra</p>
+			<p>Baramati, Maharashtra</p>
 
 			<p>Mobile : 9876543210</p>
 
@@ -280,7 +355,7 @@ body{
 
 		<div>
 			<b>Invoice No. :</b>
-			<?php echo rand(1000,9999); ?>
+			<?php echo $payment['invoice_id']; ?>
 		</div>
 
 		<div>
@@ -330,6 +405,10 @@ body{
 				Address :
 				<?php echo $customer['address']; ?>
 			</p>
+		<p>
+	Milk Type :
+	<?php echo $customer['milk_type']; ?>
+</p>
 
 		</div>
 
@@ -351,11 +430,13 @@ body{
 				₹ <?php echo number_format($total['total_amount'],2); ?>
 			</p>
 
-			<p>
-				<b>Status :</b>
+		<p>
 
-				Pending
-			</p>
+	<b>Status :</b>
+
+	<?php echo $payment['payment_status']; ?>
+
+</p>
 
 		</div>
 
@@ -364,84 +445,270 @@ body{
 
 
 	<!-- Table -->
-
 	<table class="table">
-
 		<thead>
-
 			<tr>
-
 				<th>Sr. No.</th>
-
 				<th>Date</th>
-
-				<th>Description</th>
-
 				<th>Quantity</th>
-
 				<th>Amount</th>
-
 			</tr>
-
 		</thead>
-
 		<tbody>
-
-<?php
-
-$sr = 1;
-
-while($row = mysqli_fetch_assoc($result))
-{
-?>
-
+			<?php
+			$sr = 1;
+			while($row = mysqli_fetch_assoc($result))
+			{
+			?>
 			<tr>
-
 				<td>
 					<?php echo $sr++; ?>
 				</td>
-
 				<td>
 					<?php echo date('d/m/Y', strtotime($row['created_at'])); ?>
 				</td>
-
-				<td>
-					<?php echo $row['milk_type']; ?> Milk
-				</td>
-
 				<td>
 					<?php echo $row['milk_quantity']; ?> Ltr
 				</td>
-
 				<td>
 					₹ <?php echo number_format($row['total_amount'],2); ?>
 				</td>
-
 			</tr>
+
+			<?php
+			}
+			?>
+			<tr class="total-row">
+				<td colspan="2">
+					Total
+				</td>
+				<td>
+					<?php echo $total['total_qty']; ?> Ltr
+				</td>
+				<td>
+					₹ <?php echo number_format($total['total_amount'],2); ?>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+
+	<!-- Food Details -->
+
+<h3 style="margin-top:30px; margin-bottom:10px;">
+
+	Food Details
+
+</h3>
+
+<table class="table">
+
+	<thead>
+
+		<tr>
+
+			<th>Sr. No.</th>
+
+			<th>Food Name</th>
+
+			<th>Per Price</th>
+
+			<th>Quantity</th>
+
+			<th>Total Amount</th>
+
+		</tr>
+
+	</thead>
+
+	<tbody>
+
+<?php
+
+$food_sr = 1;
+
+$food_total = 0;
+
+while($food = mysqli_fetch_assoc($food_result))
+{
+
+	$food_total += $food['total_amount'];
+
+?>
+
+		<tr>
+
+			<td>
+				<?php echo $food_sr++; ?>
+			</td>
+
+			<td>
+				<?php echo $food['food_name']; ?>
+			</td>
+
+			<td>
+				₹ <?php echo number_format($food['food_price'],2); ?>
+			</td>
+
+			<td>
+				<?php echo $food['food_unit']; ?>
+			</td>
+
+			<td>
+				₹ <?php echo number_format($food['total_amount'],2); ?>
+			</td>
+
+		</tr>
 
 <?php
 }
 ?>
 
-			<tr class="total-row">
+		<tr class="total-row">
 
-				<td colspan="3">
-					Total
-				</td>
+			<td colspan="4">
 
-				<td>
-					<?php echo $total['total_qty']; ?> Ltr
-				</td>
+				Food Total
 
-				<td>
-					₹ <?php echo number_format($total['total_amount'],2); ?>
-				</td>
+			</td>
 
-			</tr>
+			<td>
 
-		</tbody>
+				₹ <?php echo number_format($food_total,2); ?>
+
+			</td>
+
+		</tr>
+
+	</tbody>
+
+</table>
+
+
+<div style="margin-top:20px; width:420px; margin-left:auto;">
+
+<?php
+
+/* Milk Total */
+
+$milk_total = $total['total_amount'];
+
+/* Food Total */
+
+$food_total_amount = $food_total;
+
+/* Milk - Food */
+
+$remaining_after_food = $milk_total - $food_total_amount;
+
+/* 40% Advance Cut */
+
+$advance_cut = ($remaining_after_food * 40) / 100;
+
+/* Remaining Advance */
+
+$remaining_advance = $total_advance - $advance_cut;
+
+/* Final Payable */
+
+$final_payable = $remaining_after_food - $advance_cut;
+
+?>
+
+	<table class="table">
+
+		<tr>
+
+			<th style="background:#f3f3f3;">
+				Total Milk Payment
+			</th>
+
+			<td>
+				₹ <?php echo number_format($milk_total,2); ?>
+			</td>
+
+		</tr>
+
+		<tr>
+
+			<th style="background:#f3f3f3;">
+				Food Amount Cut
+			</th>
+
+			<td>
+				₹ <?php echo number_format($food_total_amount,2); ?>
+			</td>
+
+		</tr>
+
+		<tr>
+
+			<th style="background:#f3f3f3;">
+				Remaining After Food
+			</th>
+
+			<td>
+				₹ <?php echo number_format($remaining_after_food,2); ?>
+			</td>
+
+		</tr>
+
+		<tr>
+
+			<th style="background:#f3f3f3;">
+				Advance Payment
+			</th>
+
+			<td>
+				₹ <?php echo number_format($total_advance,2); ?>
+			</td>
+
+		</tr>
+
+		<tr>
+
+			<th style="background:#f3f3f3;">
+				40% Advance Cut
+			</th>
+
+			<td>
+				₹ <?php echo number_format($advance_cut,2); ?>
+			</td>
+
+		</tr>
+
+		<tr>
+
+			<th style="background:#f3f3f3;">
+				Remaining Advance
+			</th>
+
+			<td>
+				₹ <?php echo number_format($remaining_advance,2); ?>
+			</td>
+
+		</tr>
+
+		<tr>
+
+			<th style="background:#d9edf7;">
+				Final Payable Amount
+			</th>
+
+			<td style="background:#d9edf7;">
+
+				<b>
+					₹ <?php echo number_format($final_payable,2); ?>
+				</b>
+
+			</td>
+
+		</tr>
 
 	</table>
+
+</div>
 
 
 

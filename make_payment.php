@@ -1,6 +1,12 @@
 <?php
 include("include/config.php");
 
+header("Cache-Control: no-cache, no-store, must-revalidate");
+
+header("Pragma: no-cache");
+
+header("Expires: 0");
+
 /* Default current month */
 $selected_month = date('Y-m');
 
@@ -69,6 +75,12 @@ else
 	<link rel="stylesheet" href="assets/css/semi-dark.css" />
 
 	<title><?php include("include/title.php"); ?></title>
+
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+
+<meta http-equiv="Pragma" content="no-cache">
+
+<meta http-equiv="Expires" content="0">
 
 </head>
 
@@ -240,20 +252,111 @@ while($row = mysqli_fetch_assoc($result))
 									<td>
 										₹ <?php echo number_format($row['total_payment'], 2); ?>
 									</td>
+
 									<td>
 
-	<a href="payment_invoice.php?
-	cust_ac_no=<?php echo $row['cust_ac_no']; ?>
-	&start_date=<?php echo $start_date; ?>
-	&end_date=<?php echo $end_date; ?>"
+	<!-- View Button -->
 
-	class="btn btn-primary btn-sm">
+	<form method="POST"
+		  action="create_invoice.php"
+		  style="display:inline-block;">
 
-		View
+		<input type="hidden"
+			   name="cust_ac_no"
+			   value="<?php echo $row['cust_ac_no']; ?>">
 
-	</a>
+		<input type="hidden"
+			   name="start_date"
+			   value="<?php echo $start_date; ?>">
+
+		<input type="hidden"
+			   name="end_date"
+			   value="<?php echo $end_date; ?>">
+
+		<button type="submit"
+				class="btn btn-primary btn-sm">
+
+			View
+
+		</button>
+
+	</form>
+
+
+<?php
+
+/* Check Invoice Status */
+
+$status_query = "
+
+SELECT * FROM payment_status
+
+WHERE cust_ac_no = '".$row['cust_ac_no']."'
+
+AND start_date = '$start_date'
+
+AND end_date = '$end_date'
+
+";
+
+$status_result = mysqli_query($conn, $status_query);
+
+$status_data = mysqli_fetch_assoc($status_result);
+
+?>
+
+
+	<!-- Status Button -->
+
+<?php
+
+if($status_data)
+{
+
+	if($status_data['payment_status'] == 1)
+	{
+?>
+
+		<button class="btn btn-success btn-sm payment-btn"
+				data-id="<?php echo $status_data['invoice_id']; ?>"
+				data-status="0">
+
+			Paid
+
+		</button>
+
+<?php
+	}
+	else
+	{
+?>
+
+		<button class="btn btn-danger btn-sm payment-btn"
+				data-id="<?php echo $status_data['invoice_id']; ?>"
+				data-status="1">
+
+			Pending
+
+		</button>
+
+<?php
+	}
+
+}
+else
+{
+?>
+
+	<span class="badge bg-secondary">
+		No Invoice
+	</span>
+
+<?php
+}
+?>
 
 </td>
+	
 								</tr>
 <?php
 }
@@ -306,6 +409,85 @@ $(document).ready(function() {
 	});
 
 });
+</script>
+
+
+<script>
+
+$(document).ready(function(){
+
+	$(document).on("click", ".payment-btn", function(){
+
+		var button = $(this);
+
+		var invoice_id = button.attr("data-id");
+
+		var current_status = button.attr("data-status");
+
+		$.ajax({
+
+			url : "change_payment_status.php",
+
+			type : "POST",
+
+			data : {
+
+				invoice_id : invoice_id,
+				status : current_status
+
+			},
+
+			success:function(response){
+
+				/* Pending -> Paid */
+
+				if(current_status == 1)
+				{
+					button
+					.removeClass("btn-danger")
+					.addClass("btn-success")
+					.html("Paid");
+
+					/* Next click la Pending karaycha */
+
+					button.attr("data-status", 0);
+				}
+
+				/* Paid -> Pending */
+
+				else
+				{
+					button
+					.removeClass("btn-success")
+					.addClass("btn-danger")
+					.html("Pending");
+
+					/* Next click la Paid karaycha */
+
+					button.attr("data-status", 1);
+				}
+
+			}
+
+		});
+
+	});
+
+});
+
+</script>
+
+
+<script>
+
+window.onpageshow = function(event)
+{
+	if (event.persisted)
+	{
+		window.location.href = window.location.href;
+	}
+};
+
 </script>
 
 <script src="assets/js/app.js"></script>
