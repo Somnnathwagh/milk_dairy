@@ -15,6 +15,17 @@ $milk_rate    = mysqli_real_escape_string($conn, $_POST['milk_rate']);
 $total_amount = mysqli_real_escape_string($conn, $_POST['total_amount']);
 
 
+// Convert Milk Type
+if($milk_type == "Cow")
+{
+	$milk_type = 1;
+}
+else if($milk_type == "Buffalo")
+{
+	$milk_type = 2;
+}
+
+
 // Insert Query
 $query = "INSERT INTO milk_entry
 (

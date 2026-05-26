@@ -12,7 +12,7 @@
 			<!--navigation-->
 			<ul class="metismenu" id="menu">
 				<li>
-					<a href="index.php">
+					<a href="dashboard.php">
 						<div class="parent-icon"><i class='bx bx-home-circle'></i>
 						</div>
 						<div class="menu-title">Dashboard</div>
@@ -95,7 +95,9 @@
 					<ul>        
 						<li> <a href="add_advance_payment.php"><i class="bx bx-right-arrow-alt"></i>Add Advance</a>
 						</li>
-						<li> <a href="show_all_payment_list.php"><i class="bx bx-right-arrow-alt"></i>Show All Payment List</a>
+						<li> <a href="show_all_payment_list.php"><i class="bx bx-right-arrow-alt"></i>Show Advance Payment</a>
+						</li>
+						<li> <a href="show_all_payment_list.php"><i class="bx bx-right-arrow-alt"></i>Pending Advance</a>
 						</li>
 						<li> <a href="make_payment.php"><i class="bx bx-right-arrow-alt"></i>Make Payment</a>
 						</li>

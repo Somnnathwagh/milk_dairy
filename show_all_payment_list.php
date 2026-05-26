@@ -67,7 +67,7 @@
 										<th>Customer Name</th>
 										<th>Milk Type</th>
 										<th>Total Amount</th>
-										<th>View Details</th>
+										<th>Date & Time</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -79,6 +79,7 @@
             cust_ac_no,
             cust_name,
             milk_type,
+			created_at,
             SUM(payment) AS total_payment
           FROM advance_payment
           GROUP BY cust_ac_no
@@ -107,7 +108,8 @@
 												?>
 											</td>
 											<td><?php echo number_format($row['total_payment'], 2); ?></td>
-											<td>aaaa</td>
+											<td><?php echo $row['created_at']; ?></td>
+
 										</tr>
 									<?php
 									}

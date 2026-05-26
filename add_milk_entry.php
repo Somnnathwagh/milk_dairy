@@ -170,18 +170,32 @@
 										$sr = 1;
 										while($row = mysqli_fetch_assoc($result))
 										{
+											// Milk Type Convert
+											if($row['milk_type'] == 1)
+											{
+												$milk_type = "Cow";
+											}
+											else if($row['milk_type'] == 2)
+											{
+												$milk_type = "Buffalo";
+											}
+											else
+											{
+												$milk_type = "Unknown";
+											}
+
 										?>
 										<tr>
 											<td><?php echo $sr++; ?></td>
 											<td><?php echo $row['cust_ac_no']; ?></td>
 											<td><?php echo $row['cust_name']; ?></td>
-											<td><?php echo $row['milk_type']; ?></td>
+											<td><?php echo $milk_type; ?></td>
 											<td><?php echo $row['milk_quantity']; ?></td>
 											<td><?php echo $row['milk_rate']; ?></td>
 											<td><?php echo $row['total_amount']; ?></td>
 										</tr>
 									<?php
-									}
+										}
 									?>
 								</tbody>
 							</table>
@@ -367,7 +381,7 @@ $(document).ready(function () {
 			url : "include/insert_milk_entry.php",
 
 			type : "POST",
-
+ 
 			data : $(this).serialize(),
 
 			success:function(response)
