@@ -183,84 +183,119 @@
 	
 
 	<script>
-		$(document).ready(function() {
-			$('#example').DataTable();
-		  } );
-	</script>
 
+$(document).ready(function () {
 
-<script>
+	// DataTable Initialize
+	var table = $('#example').DataTable();
 
-	$(document).ready(function () {
-
-	$('#example').DataTable();
-
-	$("#customerForm").on("submit", function(e){
-
+	// Form Submit
+	$("#customerForm").on("submit", function(e)
+	{
 		e.preventDefault();
+
 		$.ajax({
+
 			url : "include/insert_customer.php",
+
 			type : "POST",
+
 			data : $(this).serialize(),
 
-	success:function(response)
-	{
-	if(response == 1)
-	{
-		Swal.fire({
-			icon: 'success',
-			title: 'Success',
-			text: 'Customer Inserted Successfully',
-			timer: 2000,
-			showConfirmButton: false
-		});
+			success:function(response)
+			{
 
-		var cust_ac_no = $("#cust_ac_no").val();
-		var cust_name  = $("#cust_name").val();
-		var milk_type  = $("#milk_type option:selected").text();
-		var address    = $("#address").val();
-		var mobile_no  = $("#mobile_no").val();
+				if(response == 1)
+				{
 
-		var newRow = `
-			<tr>
-				<td>${cust_ac_no}</td>
-				<td>${cust_name}</td>
-				<td>${milk_type}</td>
-				<td>${address}</td>
-				<td>${mobile_no}</td>
-			</tr>
-		`;
+					// Form Values
+					var cust_ac_no  = $("#cust_ac_no").val();
 
-		$('#example').DataTable().row.add($(newRow)).draw(false);
+					var cust_name   = $("#cust_name").val();
 
-		$("#customerForm")[0].reset();
-	}
-	else if(response == 2)
-	{
-		Swal.fire({
-			icon: 'warning',
-			title: 'Duplicate Entry',
-			text: 'Customer Account Number Already Exists',
-			timer: 2000,
-			showConfirmButton: false
-		});
-	}
-	else
-	{
-		Swal.fire({
-			icon: 'error',
-			title: 'Error',
-			text: 'Data Not Inserted',
-			timer: 2000,
-			showConfirmButton: false
-		});
-	}
-	}
+					var milk_type   = $("#milk_type").val();
+
+					var address     = $("#address").val();
+
+					var mobile_no   = $("#mobile_no").val();
+
+					// Milk Type Convert
+					var milk_text = "";
+
+					if(milk_type == 1)
+					{
+						milk_text = "Cow";
+					}
+					else
+					{
+						milk_text = "Buffalo";
+					}
+
+					// Row Count
+					var rowCount = table.rows().count() + 1;
+
+					// Add Row Instantly Without Refresh
+					table.row.add([
+
+						rowCount,
+
+						cust_ac_no,
+
+						cust_name,
+
+						milk_text,
+
+						address,
+
+						mobile_no
+
+					]).draw(false);
+
+					// Sweet Alert
+					Swal.fire({
+
+						icon: 'success',
+
+						title: 'Success',
+
+						text: 'Customer Inserted Successfully',
+
+						timer: 2000,
+
+						showConfirmButton: false
+
+					});
+
+					// Reset Form
+					$("#customerForm")[0].reset();
+
+				}
+				else
+				{
+
+					Swal.fire({
+
+						icon: 'error',
+
+						title: 'Duplicate Account Number',
+
+						text: 'Account Number Already Exist',
+
+						timer: 2000,
+
+						showConfirmButton: false
+
+					});
+
+				}
+
+			}
+
 		});
 
 	});
 
-	});
+});
 
 </script>
 
