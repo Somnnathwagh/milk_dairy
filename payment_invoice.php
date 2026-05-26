@@ -434,7 +434,18 @@ body{
 
 	<b>Status :</b>
 
-	<?php echo $payment['payment_status']; ?>
+	<?php
+
+if($payment['payment_status'] == 1)
+{
+	echo "Paid";
+}
+else
+{
+	echo "Pending";
+}
+
+?>
 
 </p>
 
