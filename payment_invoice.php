@@ -122,7 +122,7 @@ $food_result = mysqli_query($conn, $food_query);
 
 
 
-/* Advance Payment Total */
+/* Total Advance */
 
 $advance_query = "
 
@@ -139,14 +139,49 @@ $advance_result = mysqli_query($conn, $advance_query);
 
 $advance = mysqli_fetch_assoc($advance_result);
 
-/* Null असल्यास 0 */
-
 $total_advance = $advance['total_advance'];
 
 if($total_advance == '')
 {
 	$total_advance = 0;
 }
+
+
+/* Total Deducted */
+
+$deduct_query = "
+
+SELECT
+SUM(deducted_amount) AS total_deducted
+
+FROM advance_deduction_history
+
+WHERE cust_ac_no = '$cust_ac_no'
+
+";
+
+$deduct_result = mysqli_query($conn, $deduct_query);
+
+$deduct = mysqli_fetch_assoc($deduct_result);
+
+$total_deducted = $deduct['total_deducted'];
+
+if($total_deducted == '')
+{
+	$total_deducted = 0;
+}
+
+
+/* Remaining Advance */
+
+$remaining_old_advance = $total_advance - $total_deducted;
+
+if($remaining_old_advance < 0)
+{
+	$remaining_old_advance = 0;
+}
+
+
 
 ?>
 
@@ -615,7 +650,55 @@ $remaining_after_food = $milk_total - $food_total_amount;
 
 /* 40% Advance Cut */
 
-$advance_cut = ($remaining_after_food * 40) / 100;
+
+/* Milk Total */
+$milk_total = $total['total_amount'];
+
+/* Food Total */
+$food_total_amount = $food_total;
+
+/* Milk - Food */
+$remaining_after_food = $milk_total - $food_total_amount;
+
+/* Advance Payment */
+$total_advance = $total_advance;
+
+/* Default */
+
+$advance_cut = 0;
+
+$remaining_advance = $remaining_old_advance;
+
+$final_payable = $remaining_after_food;
+
+
+/* Only if remaining advance exists */
+
+if($remaining_old_advance > 0)
+{
+
+    /* 40% Deduction */
+
+    $advance_cut = ($remaining_after_food * 40) / 100;
+
+    /* Remaining advance पेक्षा जास्त कट नको */
+
+    if($advance_cut > $remaining_old_advance)
+    {
+        $advance_cut = $remaining_old_advance;
+    }
+
+    /* Remaining Advance */
+
+    $remaining_advance = $remaining_old_advance - $advance_cut;
+
+    /* Final Payable */
+
+    $final_payable = $remaining_after_food - $advance_cut;
+
+}
+
+
 
 /* Remaining Advance */
 
@@ -719,7 +802,86 @@ $final_payable = $remaining_after_food - $advance_cut;
 
 	</table>
 
+
+<?php
+
+/* Payment Paid असल्यास */
+
+if($payment['payment_status'] == 1)
+{
+
+	/* आधी record आहे का check */
+
+	$check_query = "
+
+	SELECT id FROM advance_deduction_history
+
+	WHERE invoice_id = '$invoice_id'
+
+	";
+
+	$check_result = mysqli_query($conn, $check_query);
+
+
+	/* Record नसेल तर insert */
+
+	if(mysqli_num_rows($check_result) == 0)
+	{
+
+		$insert_query = "
+
+		INSERT INTO advance_deduction_history(
+
+			invoice_id,
+			cust_ac_no,
+			total_advance,
+			deducted_amount,
+			remaining_advance
+
+		)
+
+		VALUES(
+
+			'$invoice_id',
+			'$cust_ac_no',
+			'$total_advance',
+			'$advance_cut',
+			'$remaining_advance'
+
+		)
+
+		";
+
+		mysqli_query($conn, $insert_query);
+
+	}
+
+}
+
+
+/* Payment Pending असल्यास */
+
+else
+{
+
+	$delete_query = "
+
+	DELETE FROM advance_deduction_history
+
+	WHERE invoice_id = '$invoice_id'
+
+	";
+
+	mysqli_query($conn, $delete_query);
+
+}
+
+?>
+
 </div>
+
+
+
 
 
 
