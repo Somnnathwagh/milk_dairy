@@ -277,7 +277,8 @@ $(document).ready(function(){
 
         var formData = new FormData(this);
 
-        $.ajax({
+        $.ajax({ 
+			/// aaaaa
 
             url : "include/insert_bank_details.php",
 
