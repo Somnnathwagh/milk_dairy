@@ -45,15 +45,15 @@
 									</div>
 									
 									<div class="form-body">
-										<form class="row g-3" >
-											<div class="col-12">
+										<form class="row g-3"  id="loginForm">											<div class="col-12">
 												<label for="username" class="form-label">Username</label>
 												<input type="email" class="form-control" id="username" name="username" placeholder="Enter Username">
 											</div>
 											<div class="col-12">
 												<label for="password" class="form-label">Enter Password</label>
 												<div class="input-group" id="show_hide_password">
-													<input type="password" name="passwotd" class="form-control border-end-0" id="password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+													<input type="password" name="password" class="form-control border-end-0" id="password"> 
+													<a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
 												</div>
 											</div>
 											
@@ -82,6 +82,8 @@
 	<script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
 	<script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
 	<script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<!--Password show & hide js -->
 	<script>
 		$(document).ready(function () {
@@ -101,6 +103,52 @@
 	</script>
 	<!--app JS-->
 	<script src="assets/js/app.js"></script>
+
+	<script>
+
+$(document).ready(function(){
+
+    $("#loginForm").submit(function(e){
+
+        e.preventDefault();
+
+        $.ajax({
+            url:"include/login_process.php",
+            type:"POST",
+            data:$(this).serialize(),
+
+          success:function(response)
+{
+    if($.trim(response) == "1")
+    {
+        Swal.fire({
+            icon: 'success',
+            title: 'Login Successful',
+            text: 'Welcome...',
+            showConfirmButton: false,
+            timer: 1000
+        });
+
+        setTimeout(function(){
+            window.location.href = "dashboard.php";
+        }, 1000);
+    }
+    else
+    {
+        Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: 'Invalid Username or Password'
+        });
+    }
+}
+        });
+
+    });
+
+});
+
+</script>
 </body>
 
 </html>

@@ -1,7 +1,15 @@
-
-
-
 <?php
+session_start();
+
+if(!isset($_SESSION['admin_id']))
+{
+    header("location:index.php");
+    exit();
+}
+
+
+
+
 include("include/index_backend.php");
 ?>
 <!doctype html>

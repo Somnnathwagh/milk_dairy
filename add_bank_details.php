@@ -26,17 +26,14 @@
 	<title><?php include("include/title.php"); ?></title>
 
 </head>
-
 <body>
 	<!--wrapper-->
 	<div class="wrapper">
 		<!--sidebar wrapper -->
-				<?php include("include/sidebar.php"); ?>
-
+		<?php include("include/sidebar.php"); ?>
 		<!--end sidebar wrapper -->
 		<!--start header -->
-			<?php include("include/header.php"); ?>
-
+		<?php include("include/header.php"); ?>
 		<!--end header -->
 		<!--start page wrapper -->
 		<div class="page-wrapper">
@@ -54,57 +51,93 @@
 						</nav>
 					</div>
 				</div>
-
 				<!-- Form Start -->
-<div class="card mb-4">
-	<div class="card-body">
-		<h6 class="mb-3 text-uppercase">Customer Form</h6>
+				<div class="card mb-4">
+					<div class="card-body">
+						<h6 class="mb-3 text-uppercase">Add Food Entry</h6>
+						<form id="bank_detalsForm" method="post" enctype="multipart/form-data">
 
-<form id="customerForm" method="post">			
-	<div class="row">
-				<div class="col-md-4 mb-3">
-					<label class="form-label">Customer Account Number</label>
-					<input type="text" name="cust_ac_no" id="cust_ac_no" class="form-control" placeholder="Enter Customer Account Number" required>
-				</div>
-				<div class="col-md-4 mb-3">
-					<label class="form-label">Customer Name</label>
-					<input type="text" name="cust_name" id="cust_name" class="form-control" placeholder="Enter Customer Name" required>
-				</div>
-				<div class="col-md-4 mb-3">
-					<label class="form-label">Milk Type</label>
-					<select name="milk_type" id="milk_type" class="form-select" required>
-						<option value="">Select Milk Type</option>
-						<option value="1">Cow</option>
-						<option value="2">Buffalo</option>
-					</select>
-				</div>
+    <div class="row">
 
-				<div class="col-md-4 mb-3">
-					<label class="form-label">Address</label>
-					<input type="text" name="address" id="address" class="form-control" placeholder="Enter Address" required>
-				</div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Account Number</label>
+            <input type="text"
+                name="cust_ac_no"
+                id="cust_ac_no"
+                class="form-control"
+                required>
+        </div>
 
-				<div class="col-md-4 mb-3">
-					<label class="form-label">Customer Mobile Number</label>
-					<input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Enter Customer Mobile Number" required>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 mb-3 d-flex align-items-end">
-					<button type="submit" name="submit" id="submit" class="btn btn-primary px-4">
-						Submit
-					</button>
-				</div>
-			</div>
-		</form>
-	</div>
-</div>
-<!-- Form End -->
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Customer Name</label>
+            <input type="text"
+                name="cust_name"
+                id="cust_name"
+                class="form-control"
+                readonly>
+        </div>
 
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Milk Type</label>
+            <input type="text"
+                name="milk_type"
+                id="milk_type"
+                class="form-control"
+                readonly>
+        </div>
 
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Bank Account Number</label>
+            <input type="text"
+                name="bank_ac_no"
+                id="bank_ac_no"
+                class="form-control">
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">IFSC Code</label>
+            <input type="text"
+                name="ifsc_code"
+                id="ifsc_code"
+                class="form-control">
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Bank Name</label>
+            <input type="text"
+                name="bank_name"
+                id="bank_name"
+                class="form-control">
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Branch Name</label>
+            <input type="text"
+                name="branch_name"
+                id="branch_name"
+                class="form-control">
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Upload QR Code</label>
+            <input type="file"
+                name="cust_qr_code"
+                id="cust_qr_code"
+                class="form-control">
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Submit
+    </button>
+
+</form>
+					</div>
+				</div>
+				<!-- Form End -->
 				<!--end breadcrumb-->
-				<h6 class="mb-0 text-uppercase">Show Customer</h6>
-				<hr/>
+				<h6 class="mb-0 text-uppercase">Show Food Entry</h6><hr/>
 				<div class="card">
 					<div class="card-body">
 						<div class="table-responsive">
@@ -112,22 +145,22 @@
 								<thead>
 									<tr>
 										<th>SR.No.</th>
-										<th>Customer Account No</th>
+										<th>Account Number</th>
 										<th>Customer Name</th>
 										<th>Milk Type</th>
-										<th>Address</th>
-										<th>Mobile Number</th>
+										<th>Food_name</th>
+										<th>Food Price</th>
+										<th>Food Unit </th>
+										<th>Total Amount</th>
+										<!-- <th>Date And Time</th> -->
 									</tr>
 								</thead>
 								<tbody>
 									<?php
 										include("include/config.php");
-										$query = "SELECT * FROM customer_master ORDER BY id DESC";
+										$query = "SELECT * FROM food_entry_master ORDER BY id DESC";
 										$result = mysqli_query($conn, $query);
-
 										$sr = 1;
-
-
 										while($row = mysqli_fetch_assoc($result))
 										{
 										?>
@@ -135,20 +168,13 @@
 											<td><?php echo $sr++; ?></td>
 											<td><?php echo $row['cust_ac_no']; ?></td>
 											<td><?php echo $row['cust_name']; ?></td>
-											<td>
-												<?php
-													if($row['milk_type'] == 1)
-													{
-														echo "Cow";
-													}
-													else
-													{
-														echo "Buffalo";
-													}
-												?>
-											</td>
-											<td><?php echo $row['address']; ?></td>
-											<td><?php echo $row['mobile_no']; ?></td>
+											<td><?php echo $row['milk_type']; ?></td>
+											<td><?php echo $row['food_name']; ?></td>
+											<td><?php echo $row['food_price']; ?></td>
+											<td><?php echo $row['food_unit']; ?></td>
+											<td><?php echo $row['total_amount']; ?></td>
+											<!-- <td><?php echo $row['created_at']; ?></td> -->
+
 										</tr>
 									<?php
 									}
@@ -188,74 +214,292 @@
 		  } );
 	</script>
 
+<!-- <script>
+
+	$(document).ready(function(){
+
+	// Fetch Customer Details
+	$("#cust_ac_no").on("keyup", function(){
+
+		var cust_ac_no = $(this).val();
+
+		if(cust_ac_no != "")
+		{
+			$.ajax({
+
+				url : "include/fetch_customer.php",
+				type : "POST",
+
+				data : {
+					cust_ac_no : cust_ac_no
+				},
+
+				success:function(response)
+				{
+					var data = JSON.parse(response);
+
+					if(data.status == 1)
+					{
+						$("#cust_name").val(data.cust_name);
+
+						$("#milk_type").val(data.milk_type);
+
+						$("#milk_rate").val(data.milk_rate);
+					}
+					else
+					{
+						$("#cust_name").val("");
+
+						$("#milk_type").val("");
+
+						$("#milk_rate").val("");
+
+						$("#total_amount").val("");
+					}
+				}
+			});
+		}
+
+	});
+
+});
+
+</script> -->
 
 <script>
 
-	$(document).ready(function () {
 
-	$('#example').DataTable();
+$(document).ready(function(){
 
-	$("#customerForm").on("submit", function(e){
+    $("#bank_detalsForm").submit(function(e){
+
+        e.preventDefault();
+
+        var formData = new FormData(this);
+
+        $.ajax({
+
+            url : "include/insert_bank_details.php",
+
+            type : "POST",
+
+            data : formData,
+
+            processData : false,
+
+            contentType : false,
+
+            success:function(response)
+            {
+
+                if($.trim(response) == "1")
+                {
+
+                    Swal.fire({
+
+                        icon : "success",
+
+                        title : "Success",
+
+                        text : "Bank Details Inserted Successfully",
+
+                        timer : 2000,
+
+                        showConfirmButton : false
+
+                    });
+
+                    $("#bank_detalsForm")[0].reset();
+
+                }
+                else
+                {
+
+                    Swal.fire({
+
+                        icon : "error",
+
+                        title : "Error",
+
+                        text : response
+
+                    });
+
+                }
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+
+
+<script>
+
+$(document).ready(function () {
+
+	// DataTable Initialize
+	var table = $('#example').DataTable();
+
+
+
+	// Fetch Customer Details
+	$("#cust_ac_no").on("keyup", function(){
+
+		var cust_ac_no = $(this).val();
+
+		if(cust_ac_no != "")
+		{
+			$.ajax({
+
+				url : "include/fetch_customer.php",
+
+				type : "POST",
+
+				data : {
+					cust_ac_no : cust_ac_no
+				},
+
+				success:function(response)
+				{
+					var data = JSON.parse(response);
+
+					if(data.status == 1)
+					{
+						$("#cust_name").val(data.cust_name);
+
+						$("#milk_type").val(data.milk_type);
+
+						$("#milk_rate").val(data.milk_rate);
+					}
+					else
+					{
+						$("#cust_name").val("");
+
+						$("#milk_type").val("");
+
+						$("#milk_rate").val("");
+
+						$("#total_amount").val("");
+					}
+				}
+
+			});
+		}
+
+	});
+
+	// Insert Milk Entry
+	$("#bank_detalsForm").on("submit", function(e)
+	{
 
 		e.preventDefault();
+
 		$.ajax({
-			url : "include/insert_customer.php",
+
+			url : "include/insert_bank_details.php",
+
 			type : "POST",
+
 			data : $(this).serialize(),
 
-	success:function(response)
-	{
-	if(response == 1)
-	{
-		Swal.fire({
-			icon: 'success',
-			title: 'Success',
-			text: 'Customer Inserted Successfully',
-			timer: 2000,
-			showConfirmButton: false
-		});
+			success:function(response)
+			{
 
-		var cust_ac_no = $("#cust_ac_no").val();
-		var cust_name  = $("#cust_name").val();
-		var milk_type  = $("#milk_type option:selected").text();
-		var address    = $("#address").val();
-		var mobile_no  = $("#mobile_no").val();
+				if(response == 1)
+				{
 
-		var newRow = `
-			<tr>
-				<td>${cust_ac_no}</td>
-				<td>${cust_name}</td>
-				<td>${milk_type}</td>
-				<td>${address}</td>
-				<td>${mobile_no}</td>
-			</tr>
-		`;
+					Swal.fire({
 
-		$('#example').DataTable().row.add($(newRow)).draw(false);
+						icon: 'success',
 
-		$("#customerForm")[0].reset();
-	}
-	else if(response == 2)
-	{
-		Swal.fire({
-			icon: 'warning',
-			title: 'Duplicate Entry',
-			text: 'Customer Account Number Already Exists',
-			timer: 2000,
-			showConfirmButton: false
-		});
-	}
-	else
-	{
-		Swal.fire({
-			icon: 'error',
-			title: 'Error',
-			text: 'Data Not Inserted',
-			timer: 2000,
-			showConfirmButton: false
-		});
-	}
-}
+						title: 'Success',
+
+						text: 'Bank Details Inserted Successfully',
+
+						timer: 2000,
+
+						showConfirmButton: false
+
+					});
+ 
+
+					// Get Form Values
+					var cust_ac_no    = $("#cust_ac_no").val();
+
+					var cust_name     = $("#cust_name").val();
+
+					var bank_ac_no     = $("#bank_ac_no").val();
+
+					var ifsc_code = $("#ifsc_code").val();
+
+					var bank_name     = $("#bank_name").val();
+
+					var branch_name  = $("#branch_name").val();
+
+					var cust_qr_code  = $("#cust_qr_code").val();
+
+
+
+
+					// Row Count
+					var rowCount = table.rows().count() + 1;
+
+
+
+					// Add New Row
+					table.row.add([
+
+						rowCount,
+
+						cust_ac_no,
+
+						cust_name,
+
+						bank_ac_no,
+
+						ifsc_code,
+
+						bank_name,
+
+						branch_name,
+
+						cust_qr_code
+
+					]).draw(false);
+
+
+
+
+					// Reset Form
+					$("#bank_detalsForm")[0].reset();
+
+				}
+				else
+				{
+
+					Swal.fire({
+
+						icon: 'error',
+
+						title: 'Error',
+
+						text: 'Data Not Inserted',
+
+						timer: 2000,
+
+						showConfirmButton: false
+
+					});
+
+				}
+
+			}
+
 		});
 
 	});
@@ -264,7 +508,12 @@
 
 </script>
 
+
+
+
+
 	
+
 	<!--app JS-->
 	<script src="assets/js/app.js"></script>
 </body>
